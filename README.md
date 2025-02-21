@@ -1,1 +1,2 @@
 # weather-app
+For this project I will be creating a simple weather application. A user will have the ability to select a location to view the weather from said location, as well as toggle between fahrenheit and celsius.  In order to provide the user with this ability, I will take the location, call an API service, process the returned data, and then display the appropriate to the user. Depending on the type of weather displayed the page will change it's "theme". For example, if the weather is cloudy, then the page's background color will be gray-is  
