@@ -66,3 +66,33 @@ function setHours(currentHour, shift) {
     return (Number(currentHour) + shift) - 24;
   }
 }
+
+function getIcon(iconId) {
+  switch (iconId) {
+    case "snow" :
+      return "images/snow.svg";
+    case "rain" :
+      return "images/rain.svg";
+    case "fog" :
+      return "images/fog.svg";
+    case "wind" :
+      return "images/wind.svg";
+    case "cloudy" :
+      return "images/cloudy.svg";
+    case "partly-cloudy-day" :
+      return "images/partly-cloudy-day.svg";
+    case "partly-cloudy-night" :
+      return "images/partly-cloudy-night.svg";
+    case "clear-day" :
+      return "images/clear-day.svg";
+    case "clear-night" :
+      return "images/clear-night.svg";
+    default :
+      return "images/default.svg";
+  }
+}
+const test = document.querySelector('.test')
+
+const image = document.createElement('img');
+image.src = getIcon("cloudy");
+test.appendChild(image);
