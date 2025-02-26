@@ -42,22 +42,28 @@ async function getWeather() {
       hour5Icon : data.days[0].hours[setHours(hour, 5)].icon,
       hour5Temp : data.days[0].hours[setHours(hour, 5)].temp,
 
+      day1Day : data.days[1].datetime,
       day1Icon : data.days[1].icon,
       day1TempLow : data.days[1].tempmin,
       day1TempHigh : data.days[1].tempmax,
+      day2Day : data.days[2].datetime,
       day2Icon : data.days[2].icon,
       day2TempLow : data.days[2].tempmin,
       day2TempHigh : data.days[2].tempmax,
+      day3Day : data.days[3].datetime,
       day3Icon : data.days[3].icon,
       day3TempLow : data.days[3].tempmin,
       day3TempHigh : data.days[3].tempmax,
+      day4Day : data.days[4].datetime,
       day4Icon : data.days[4].icon,
       day4TempLow : data.days[4].tempmin,
       day4TempHigh : data.days[4].tempmax,
+      day5Day : data.days[5].datetime,
       day5Icon : data.days[5].icon,
       day5TempLow : data.days[5].tempmin,
       day5TempHigh : data.days[5].tempmax,
     };
+    console.log(data);
     console.log(displayData);
     displayWeather(displayData);
   })
@@ -242,19 +248,28 @@ function displayWeather(displayData) {
 
   const dayDay1 = document.createElement('div');
   vontainerDays.appendChild(dayDay1);
-  dayDay1.textContent = "Tomorrow";
+  dayDay1.textContent = setDay(displayData.day1Day);
   dayDay1.classList.add('content');
 
   const dayDay2 = document.createElement('div');
   vontainerDays.appendChild(dayDay2);
-  dayDay2.textContent = ;
+  dayDay2.textContent = setDay(displayData.day2Day);
   dayDay2.classList.add('content');
 
-  //
+  const dayDay3 = document.createElement('div');
+  vontainerDays.appendChild(dayDay3);
+  dayDay3.textContent = setDay(displayData.day3Day);
+  dayDay3.classList.add('content');
 
-  //
+  const dayDay4 = document.createElement('div');
+  vontainerDays.appendChild(dayDay4);
+  dayDay4.textContent = setDay(displayData.day4Day);
+  dayDay4.classList.add('content');
 
-  //
+  const dayDay5 = document.createElement('div');
+  vontainerDays.appendChild(dayDay5);
+  dayDay5.textContent = setDay(displayData.day5Day);
+  dayDay5.classList.add('content');
 
   const vontainerIcon = document.createElement('div');
   hontainerDaily.appendChild(vontainerIcon);
@@ -372,8 +387,14 @@ function setHours(currentHour, shift) {
   }
 }
 
-function setDay (currentDay, shift) {
-  
+function setDay(dateData) {
+  console.log(`dateData = ${dateData}`);
+  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const date = new Date(`${dateData}T00:00:00`);
+  console.log(`date = ${date}`);
+  let day = weekday[date.getDay()];
+  console.log(`day = ${day}`);
+  return day;
 }
 
 function getIcon(iconId) {
