@@ -106,7 +106,7 @@ function displayWeather(displayData) {
   const description = document.createElement('div');
   middle.appendChild(description);
   description.textContent = displayData.currentDayDescription;
-  description.classList.add('heading');
+  description.classList.add('subheading');
 
   const hontainerHourly = document.createElement('div');
   middle.appendChild(hontainerHourly);
@@ -231,7 +231,7 @@ function displayWeather(displayData) {
   const dailyForecast = document.createElement('div');
   bottom.appendChild(dailyForecast);
   dailyForecast.textContent = "5-DAY FORECAST";
-  dailyForecast.classList.add('heading');
+  dailyForecast.classList.add('subheading');
 
   const hontainerDaily = document.createElement('div');
   bottom.appendChild(hontainerDaily);
