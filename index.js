@@ -15,8 +15,9 @@ async function getData(location, unit) {
 }
 
 async function getWeather() {
-  console.log("I've been clicked!");
-  getData("boulder", "us").then((data) => {
+  const userLocation = document.getElementById('userLocation');
+  console.log(userLocation.value);
+  getData(userLocation.value, "us").then((data) => {
     const hour = data.currentConditions.datetime.slice(0,2);
     const displayData = {
       datetime : data.currentConditions.datetime,
@@ -56,8 +57,23 @@ async function getWeather() {
       day5TempLow : data.days[5].tempmin,
       day5TempHigh : data.days[5].tempmax,
     };
+    console.log(displayData);
     displayWeather(displayData);
   })
+}
+
+function displayWeather(displayData) {
+
+
+  const test = document.querySelector('.test')
+  const image = document.createElement('img');
+  image.src = getIcon(displayData.hour0Icon);
+  test.appendChild(image);
+}
+
+function cleanLocation(location) {
+  let split = location.split(",");
+  return `${split[0]},${split[1]}`;
 }
 
 function setHours(currentHour, shift) {
@@ -66,11 +82,6 @@ function setHours(currentHour, shift) {
   } else {
     return (Number(currentHour) + shift) - 24;
   }
-}
-
-function cleanLocation(location) {
-  let split = location.split(",");
-  return `${split[0]},${split[1]}`;
 }
 
 function getIcon(iconId) {
@@ -96,14 +107,6 @@ function getIcon(iconId) {
     default :
       return "images/default.svg";
   }
-}
-
-function displayWeather(displayData) {
-  const test = document.querySelector('.test')
-  const image = document.createElement('img');
-  image.src = getIcon(displayData.hour0Icon);
-  test.appendChild(image);
-  console.log(displayData.hour0Icon);
 }
 
 
