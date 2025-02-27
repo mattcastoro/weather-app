@@ -46,11 +46,18 @@ body {
   width: 10em;
 }
 
+#userBtn {
+  cursor: pointer;
+  color: black;
+  background-color: lightgray;
+}
+
 #userLocation,
 #userBtn {
   padding: .25em 1em;
   border: .125em solid black;
   border-radius: 1em;
+  height: 2em;
 }
 
 .top,
@@ -101,4 +108,42 @@ body {
   justify-items: center;
   align-content: space-around;
   gap: .25em;
+}
+
+#tog {
+  appearance: none;
+  position: relative;
+  width: 4em;
+  height: 2em;
+  border-radius: 2em;
+  background-color: #cccccc;
+  transition: background .3s;
+  outline: none;
+  cursor: pointer;
+}
+
+#tog::after {
+  display: flex;
+  position: absolute;
+  content: "\2109";
+  font-size: .75rem;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: rgb(255, 255, 255);
+  transition: left .3s;
+}
+
+#tog:checked {
+  background-color: darkgray;
+}
+
+#tog:checked::after {
+  left: 70%;
+  content: "\2103";
 }

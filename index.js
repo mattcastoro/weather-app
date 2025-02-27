@@ -16,56 +16,61 @@ async function getData(location, unit) {
 
 async function getWeather() {
   const userLocation = document.getElementById('userLocation');
-  getData(userLocation.value, "us").then((data) => {
-    console.log(data);
-    const hour = data.currentConditions.datetime.slice(0,2);
-    const displayData = {
-      datetime : data.currentConditions.datetime,
-      location : cleanLocation(data.resolvedAddress),
+  const unit = getUnit();
+  if (!userLocation.value) {
+    alert("Please add a location before searching or selecting a degree unit.");
+  } else {
+    getData(userLocation.value, unit).then((data) => {
+      console.log(data);
+      const hour = data.currentConditions.datetime.slice(0,2);
+      const displayData = {
+        datetime : data.currentConditions.datetime,
+        location : cleanLocation(data.resolvedAddress),
 
-      currentTemp : Math.round(data.currentConditions.temp),
-      feelsLike : Math.round(data.currentConditions.feelslike),
-      currentHighTemp : Math.round(data.days[0].tempmax),
-      currentLowTemp : Math.round(data.days[0].tempmin),
-      currentIcon : data.days[0].icon,
+        currentTemp : Math.round(data.currentConditions.temp),
+        feelsLike : Math.round(data.currentConditions.feelslike),
+        currentHighTemp : Math.round(data.days[0].tempmax),
+        currentLowTemp : Math.round(data.days[0].tempmin),
+        currentIcon : data.days[0].icon,
 
-      currentDayDescription : data.days[0].description,
-      hour0Icon : data.currentConditions.icon,
-      hour1Icon : data.days[0].hours[setHours(hour, 1)].icon,
-      hour1Temp : Math.round(data.days[0].hours[setHours(hour, 1)].temp),
-      hour2Icon : data.days[0].hours[setHours(hour, 2)].icon,
-      hour2Temp : Math.round(data.days[0].hours[setHours(hour, 2)].temp),
-      hour3Icon : data.days[0].hours[setHours(hour, 3)].icon,
-      hour3Temp : Math.round(data.days[0].hours[setHours(hour, 3)].temp),
-      hour4Icon : data.days[0].hours[setHours(hour, 4)].icon,
-      hour4Temp : Math.round(data.days[0].hours[setHours(hour, 4)].temp),
-      hour5Icon : data.days[0].hours[setHours(hour, 5)].icon,
-      hour5Temp : Math.round(data.days[0].hours[setHours(hour, 5)].temp),
+        currentDayDescription : data.days[0].description,
+        hour0Icon : data.currentConditions.icon,
+        hour1Icon : data.days[0].hours[setHours(hour, 1)].icon,
+        hour1Temp : Math.round(data.days[0].hours[setHours(hour, 1)].temp),
+        hour2Icon : data.days[0].hours[setHours(hour, 2)].icon,
+        hour2Temp : Math.round(data.days[0].hours[setHours(hour, 2)].temp),
+        hour3Icon : data.days[0].hours[setHours(hour, 3)].icon,
+        hour3Temp : Math.round(data.days[0].hours[setHours(hour, 3)].temp),
+        hour4Icon : data.days[0].hours[setHours(hour, 4)].icon,
+        hour4Temp : Math.round(data.days[0].hours[setHours(hour, 4)].temp),
+        hour5Icon : data.days[0].hours[setHours(hour, 5)].icon,
+        hour5Temp : Math.round(data.days[0].hours[setHours(hour, 5)].temp),
 
-      day1Day : data.days[1].datetime,
-      day1Icon : data.days[1].icon,
-      day1TempLow : Math.round(data.days[1].tempmin),
-      day1TempHigh : Math.round(data.days[1].tempmax),
-      day2Day : data.days[2].datetime,
-      day2Icon : data.days[2].icon,
-      day2TempLow : Math.round(data.days[2].tempmin),
-      day2TempHigh : Math.round(data.days[2].tempmax),
-      day3Day : data.days[3].datetime,
-      day3Icon : data.days[3].icon,
-      day3TempLow : Math.round(data.days[3].tempmin),
-      day3TempHigh : Math.round(data.days[3].tempmax),
-      day4Day : data.days[4].datetime,
-      day4Icon : data.days[4].icon,
-      day4TempLow : Math.round(data.days[4].tempmin),
-      day4TempHigh : Math.round(data.days[4].tempmax),
-      day5Day : data.days[5].datetime,
-      day5Icon : data.days[5].icon,
-      day5TempLow : Math.round(data.days[5].tempmin),
-      day5TempHigh : Math.round(data.days[5].tempmax),
-    };
-    console.log(displayData);
-    displayWeather(displayData);
-  })
+        day1Day : data.days[1].datetime,
+        day1Icon : data.days[1].icon,
+        day1TempLow : Math.round(data.days[1].tempmin),
+        day1TempHigh : Math.round(data.days[1].tempmax),
+        day2Day : data.days[2].datetime,
+        day2Icon : data.days[2].icon,
+        day2TempLow : Math.round(data.days[2].tempmin),
+        day2TempHigh : Math.round(data.days[2].tempmax),
+        day3Day : data.days[3].datetime,
+        day3Icon : data.days[3].icon,
+        day3TempLow : Math.round(data.days[3].tempmin),
+        day3TempHigh : Math.round(data.days[3].tempmax),
+        day4Day : data.days[4].datetime,
+        day4Icon : data.days[4].icon,
+        day4TempLow : Math.round(data.days[4].tempmin),
+        day4TempHigh : Math.round(data.days[4].tempmax),
+        day5Day : data.days[5].datetime,
+        day5Icon : data.days[5].icon,
+        day5TempLow : Math.round(data.days[5].tempmin),
+        day5TempHigh : Math.round(data.days[5].tempmax),
+      };
+      console.log(displayData);
+      displayWeather(displayData);
+    })
+  }
 }
 
 function displayWeather(displayData) {
@@ -424,6 +429,16 @@ function getIcon(iconId) {
       return "images/clear-night.svg";
     default :
       return "images/default.svg";
+  }
+}
+
+function getUnit() {
+  const userUnit = document.getElementById('tog');
+
+  if (userUnit.checked === false) {
+    return "us"
+  } else {
+    return "metric"
   }
 }
 
