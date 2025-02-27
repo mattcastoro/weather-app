@@ -42,6 +42,17 @@ body {
   gap: 1em;
 }
 
+#userLocation {
+  width: 10em;
+}
+
+#userLocation,
+#userBtn {
+  padding: .25em 1em;
+  border: .125em solid black;
+  border-radius: 1em;
+}
+
 .top,
 .middle,
 .bottom {
@@ -69,6 +80,10 @@ body {
   font-size: 1em;
 }
 
+.subContent {
+  font-size: .75em;
+}
+
 .icon {
   width: 2em;
 }
@@ -82,5 +97,6 @@ body {
 .vontainer {
   display: grid;
   justify-items: center;
-  align-content: space-between;
+  align-content: space-around;
+  gap: .25em;
 }
