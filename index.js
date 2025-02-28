@@ -79,6 +79,9 @@ function displayWeather(displayData) {
   clearDisplay();
   updateBackground(displayData.currentIcon);
   const top = document.querySelector('.top');
+  
+  const locationField = document.getElementById('userLocation');
+  locationField.value = displayData.location;
 
   const asOf = document.createElement('div');
   top.appendChild(asOf);
@@ -413,7 +416,9 @@ function displayWeather(displayData) {
 
 function cleanLocation(location) {
   let split = location.split(",");
-  return `${split[0]},${split[1]}`;
+  let concat = `${split[0]},${split[1]}`;
+  storeLocation(concat);
+  return concat;
 }
 
 function setHours(currentHour, shift) {
@@ -511,5 +516,46 @@ function updateBackground(icon) {
     default :
     bgc.style.cssText = "background-color: #AABFCC; color: black";
       break;
+  }
+}
+
+// For storing/retrieving last searched location
+
+if (storageAvailable("localStorage")) {
+  retrieveLocation();
+}
+
+function storageAvailable(type) {
+  let storage;
+  try {
+    storage = window[type];
+    const x = "__storage_test__";
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return (
+      e instanceof DOMException &&
+      e.name === "QuotaExceededError" &&
+      // acknowledge QuotaExceededError only if there's something already stored
+      storage &&
+      storage.length !== 0
+    );
+  }
+}
+
+function storeLocation(location) {
+  localStorage.setItem("location", JSON.stringify(location));
+}
+
+function retrieveLocation() {
+  const storedLocation = localStorage.getItem("location");
+  const parsedLocation = JSON.parse(storedLocation);
+  if (!parsedLocation) {
+    return "empty";
+  } else {
+    const locationField = document.getElementById('userLocation');
+    locationField.value = parsedLocation; 
+    getWeather();
   }
 }
