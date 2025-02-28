@@ -31,7 +31,9 @@ async function getWeather() {
         feelsLike : Math.round(data.currentConditions.feelslike),
         currentHighTemp : Math.round(data.days[0].tempmax),
         currentLowTemp : Math.round(data.days[0].tempmin),
-        currentIcon : data.days[0].icon,
+        currentIcon : data.currentConditions.icon,
+        currentSunrise : data.currentConditions.sunrise.slice(0, 5),
+        currentSunset : data.currentConditions.sunset.slice(0, 5),
 
         currentDayDescription : data.days[0].description,
         hour0Icon : data.currentConditions.icon,
@@ -75,11 +77,12 @@ async function getWeather() {
 
 function displayWeather(displayData) {
   clearDisplay();
+  updateBackground(displayData.currentIcon);
   const top = document.querySelector('.top');
 
   const asOf = document.createElement('div');
   top.appendChild(asOf);
-  asOf.textContent = `As of: ${displayData.datetime.slice(0, 5)}`;
+  asOf.textContent = `As of: ${displayData.datetime.slice(0, 5)} local time`;
   asOf.classList.add('subContent');
 
   const searchLocation = document.createElement('div');
@@ -99,17 +102,41 @@ function displayWeather(displayData) {
 
   const hontainerTemp = document.createElement('div');
   top.appendChild(hontainerTemp);
-  hontainerTemp.classList.add('hontainer');
+  hontainerTemp.classList.add('hontainer', 'sun');
 
   const currentHigh = document.createElement('div');
   hontainerTemp.appendChild(currentHigh);
-  currentHigh.textContent = `H: ${displayData.currentHighTemp}`;
+  currentHigh.textContent = `High: ${displayData.currentHighTemp}`;
   currentHigh.classList.add('content');
   
   const currentLow = document.createElement('div');
   hontainerTemp.appendChild(currentLow);
-  currentLow.textContent = `L: ${displayData.currentLowTemp}`;
+  currentLow.textContent = `Low: ${displayData.currentLowTemp}`;
   currentLow.classList.add('content');
+
+  const hontainerSun = document.createElement('div');
+  top.appendChild(hontainerSun);
+  hontainerSun.classList.add('hontainer', 'sun');
+
+  const iconSunrise = document.createElement('img');
+  hontainerSun.appendChild(iconSunrise);
+  iconSunrise.src = 'images/sunrise.svg';
+  iconSunrise.classList.add('content', 'icon');
+
+  const timeSunrise = document.createElement('div');
+  hontainerSun.appendChild(timeSunrise);
+  timeSunrise.textContent = displayData.currentSunrise;
+  timeSunrise.classList.add('content');
+
+  const iconSunset = document.createElement('img');
+  hontainerSun.appendChild(iconSunset);
+  iconSunset.src = 'images/sunset.svg';
+  iconSunset.classList.add('content', 'icon');
+
+  const timeSunset = document.createElement('div');
+  hontainerSun.appendChild(timeSunset);
+  timeSunset.textContent = displayData.currentSunset;
+  timeSunset.classList.add('content');
 
   const middle = document.querySelector('.middle');
 
@@ -390,7 +417,7 @@ function cleanLocation(location) {
 }
 
 function setHours(currentHour, shift) {
-  if (Number(currentHour) + shift <= 24) {
+  if (Number(currentHour) + shift < 24) {
     return Number(currentHour) + shift;
   } else {
     return (Number(currentHour) + shift) - 24;
@@ -398,12 +425,9 @@ function setHours(currentHour, shift) {
 }
 
 function setDay(dateData) {
-  console.log(`dateData = ${dateData}`);
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const date = new Date(`${dateData}T00:00:00`);
-  console.log(`date = ${date}`);
   let day = weekday[date.getDay()];
-  console.log(`day = ${day}`);
   return day;
 }
 
@@ -453,3 +477,39 @@ function clearDisplay() {
   bottom.textContent = "";
 }
 
+function updateBackground(icon) {
+  const bgc = document.querySelector('body');
+
+  switch (icon) {
+    case "snow" :
+      bgc.style.cssText = "background-color: #F1F1F1; color: black";
+      break;
+    case "rain" :
+      bgc.style.cssText = "background-color: #A7C2E5; color: black";
+      break;
+    case "fog" :
+      bgc.style.cssText = "background-color: #7F9BA6; color: black";
+      break;
+    case "wind" :
+      bgc.style.cssText = "background-color: #AABFCC; color: black";
+      break;
+    case "cloudy" :
+      bgc.style.cssText = "background-color: #E4E6ED; color: black";
+      break;
+    case "partly-cloudy-day" :
+      bgc.style.cssText = "background-color: #C8F4F9; color: black";
+      break;
+    case "partly-cloudy-night" :
+      bgc.style.cssText = "background-color: #214358; color: white";
+      break;
+    case "clear-day" :
+      bgc.style.cssText = "background-color: #FFDF40; color: black";
+      break;
+    case "clear-night" :
+      bgc.style.cssText = "background-color: #151B25; color: white";
+      break;;
+    default :
+    bgc.style.cssText = "background-color: #AABFCC; color: black";
+      break;
+  }
+}
