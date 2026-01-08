@@ -54,7 +54,7 @@ async function getWeather() {
         currentSunrise : data.currentConditions.sunrise.slice(0, 5),
         currentSunset : data.currentConditions.sunset.slice(0, 5),
 
-        currentDayDescription : data.days[0].description,
+        currentDayDescription : data.description,
         hour0Icon : data.currentConditions.icon,
         hour1Icon : data.days[0].hours[setHours(hour, 1)].icon,
         hour1Temp : Math.round(data.days[0].hours[setHours(hour, 1)].temp),
@@ -97,7 +97,6 @@ async function getWeather() {
 function displayWeather(displayData) {
   clearDisplay();
   // updateBackground(displayData.currentIcon);
-  const top = document.querySelector('.top');
   
   const locationField = document.getElementById('userLocation');
   locationField.value = displayData.location;
@@ -106,189 +105,26 @@ function displayWeather(displayData) {
   document.querySelector('#searchLocation').textContent = displayData.location;
   document.querySelector('#timeSunrise').textContent = displayData.currentSunrise;
   document.querySelector('#timeSunset').textContent = displayData.currentSunset;
+  document.querySelector('#currentDescription').textContent = displayData.currentDayDescription;
+  document.querySelector('#currentTemp').textContent = `${displayData.currentTemp}°`;
+  document.querySelector('#highTemp').textContent = `High: ${displayData.currentHighTemp}°`;
+  document.querySelector('#lowTemp').textContent = `Low: ${displayData.currentLowTemp}°`;
+  document.querySelector('#hour1').textContent = setHours(displayData.datetime.slice(0, 2), 1);
+  document.querySelector('#hour2').textContent = setHours(displayData.datetime.slice(0, 2), 2);
+  document.querySelector('#hour3').textContent = setHours(displayData.datetime.slice(0, 2), 3);
+  document.querySelector('#hour4').textContent = setHours(displayData.datetime.slice(0, 2), 4);
+  document.querySelector('#hour5').textContent = setHours(displayData.datetime.slice(0, 2), 5);
+  document.querySelector('#hour1-icon').src = getIcon(displayData.hour1Icon);
+  document.querySelector('#hour2-icon').src = getIcon(displayData.hour2Icon);
+  document.querySelector('#hour3-icon').src = getIcon(displayData.hour3Icon);
+  document.querySelector('#hour4-icon').src = getIcon(displayData.hour4Icon);
+  document.querySelector('#hour5-icon').src = getIcon(displayData.hour5Icon);
+  document.querySelector('#hour1-temp').textContent = `${displayData.hour1Temp}°`;
+  document.querySelector('#hour2-temp').textContent = `${displayData.hour2Temp}°`;
+  document.querySelector('#hour3-temp').textContent = `${displayData.hour3Temp}°`;
+  document.querySelector('#hour4-temp').textContent = `${displayData.hour4Temp}°`;
+  document.querySelector('#hour5-temp').textContent = `${displayData.hour5Temp}°`;
 
-  const asOf = document.createElement('div');
-  top.appendChild(asOf);
-  asOf.textContent = `As of: ${displayData.datetime.slice(0, 5)} local time`;
-  asOf.classList.add('subContent');
-
-  const searchLocation = document.createElement('div');
-  top.appendChild(searchLocation);
-  searchLocation.textContent = displayData.location;
-  searchLocation.classList.add('heading');
-
-  const currentTemp = document.createElement('div');
-  top.appendChild(currentTemp);
-  currentTemp.textContent = displayData.currentTemp;
-  currentTemp.classList.add('title');
-
-  const feelsLike = document.createElement('div');
-  top.appendChild(feelsLike);
-  feelsLike.textContent = `Feels Like: ${displayData.feelsLike}`;
-  feelsLike.classList.add('content');
-
-  const hontainerTemp = document.createElement('div');
-  top.appendChild(hontainerTemp);
-  hontainerTemp.classList.add('hontainer', 'sun');
-
-  const currentHigh = document.createElement('div');
-  hontainerTemp.appendChild(currentHigh);
-  currentHigh.textContent = `High: ${displayData.currentHighTemp}`;
-  currentHigh.classList.add('content');
-  
-  const currentLow = document.createElement('div');
-  hontainerTemp.appendChild(currentLow);
-  currentLow.textContent = `Low: ${displayData.currentLowTemp}`;
-  currentLow.classList.add('content');
-
-  const hontainerSun = document.createElement('div');
-  top.appendChild(hontainerSun);
-  hontainerSun.classList.add('hontainer', 'sun');
-
-  const iconSunrise = document.createElement('img');
-  hontainerSun.appendChild(iconSunrise);
-  iconSunrise.src = 'images/sunrise.svg';
-  iconSunrise.classList.add('content', 'icon');
-
-  const timeSunrise = document.createElement('div');
-  hontainerSun.appendChild(timeSunrise);
-  timeSunrise.textContent = displayData.currentSunrise;
-  timeSunrise.classList.add('content');
-
-  const iconSunset = document.createElement('img');
-  hontainerSun.appendChild(iconSunset);
-  iconSunset.src = 'images/sunset.svg';
-  iconSunset.classList.add('content', 'icon');
-
-  const timeSunset = document.createElement('div');
-  hontainerSun.appendChild(timeSunset);
-  timeSunset.textContent = displayData.currentSunset;
-  timeSunset.classList.add('content');
-
-  const middle = document.querySelector('.middle');
-
-  const description = document.createElement('div');
-  middle.appendChild(description);
-  description.textContent = displayData.currentDayDescription;
-  description.classList.add('subheading');
-
-  const hontainerHourly = document.createElement('div');
-  middle.appendChild(hontainerHourly);
-  hontainerHourly.classList.add('hontainer');
-
-  const vontainerHour0 = document.createElement('div');
-  hontainerHourly.appendChild(vontainerHour0);
-  vontainerHour0.classList.add('vontainer');
-
-  const time0 = document.createElement('div');
-  vontainerHour0.appendChild(time0);
-  time0.textContent = "Now";
-  time0.classList.add('content');
-
-  const iconTime0 = document.createElement('img');
-  vontainerHour0.appendChild(iconTime0);
-  iconTime0.src = getIcon(displayData.hour0Icon);
-  iconTime0.classList.add('content', 'icon');
-
-  const tempTime0 = document.createElement('div');
-  vontainerHour0.appendChild(tempTime0);
-  tempTime0.textContent = displayData.currentTemp;
-  tempTime0.classList.add('content');
-
-  const vontainerHour1 = document.createElement('div');
-  hontainerHourly.appendChild(vontainerHour1);
-  vontainerHour1.classList.add('vontainer');
-
-  const time1 = document.createElement('div');
-  vontainerHour1.appendChild(time1);
-  time1.textContent = setHours(displayData.datetime.slice(0, 2), 1);
-  time1.classList.add('content');
-
-  const iconTime1 = document.createElement('img');
-  vontainerHour1.appendChild(iconTime1);
-  iconTime1.src = getIcon(displayData.hour1Icon);
-  iconTime1.classList.add('content', 'icon');
-
-  const tempTime1 = document.createElement('div');
-  vontainerHour1.appendChild(tempTime1);
-  tempTime1.textContent = displayData.hour1Temp;
-  tempTime1.classList.add('content');
-
-  const vontainerHour2 = document.createElement('div');
-  hontainerHourly.appendChild(vontainerHour2);
-  vontainerHour2.classList.add('vontainer');
-
-  const time2 = document.createElement('div');
-  vontainerHour2.appendChild(time2);
-  time2.textContent = setHours(displayData.datetime.slice(0, 2), 2);
-  time2.classList.add('content');
-
-  const iconTime2 = document.createElement('img');
-  vontainerHour2.appendChild(iconTime2);
-  iconTime2.src = getIcon(displayData.hour2Icon);
-  iconTime2.classList.add('content', 'icon');
-
-  const tempTime2 = document.createElement('div');
-  vontainerHour2.appendChild(tempTime2);
-  tempTime2.textContent = displayData.hour2Temp;
-  tempTime2.classList.add('content');
-
-  const vontainerHour3 = document.createElement('div');
-  hontainerHourly.appendChild(vontainerHour3);
-  vontainerHour3.classList.add('vontainer');
-
-  const time3 = document.createElement('div');
-  vontainerHour3.appendChild(time3);
-  time3.textContent = setHours(displayData.datetime.slice(0, 2), 3);
-  time3.classList.add('content');
-
-  const iconTime3 = document.createElement('img');
-  vontainerHour3.appendChild(iconTime3);
-  iconTime3.src = getIcon(displayData.hour3Icon);
-  iconTime3.classList.add('content', 'icon');
-
-  const tempTime3 = document.createElement('div');
-  vontainerHour3.appendChild(tempTime3);
-  tempTime3.textContent = displayData.hour3Temp;
-  tempTime3.classList.add('content');
-
-  const vontainerHour4 = document.createElement('div');
-  hontainerHourly.appendChild(vontainerHour4);
-  vontainerHour4.classList.add('vontainer');
-
-  const time4 = document.createElement('div');
-  vontainerHour4.appendChild(time4);
-  time4.textContent = setHours(displayData.datetime.slice(0, 2), 4);
-  time4.classList.add('content');
-
-  const iconTime4 = document.createElement('img');
-  vontainerHour4.appendChild(iconTime4);
-  iconTime4.src = getIcon(displayData.hour4Icon);
-  iconTime4.classList.add('content', 'icon');
-
-  const tempTime4 = document.createElement('div');
-  vontainerHour4.appendChild(tempTime4);
-  tempTime4.textContent = displayData.hour4Temp;
-  tempTime4.classList.add('content');
-
-  const vontainerHour5 = document.createElement('div');
-  hontainerHourly.appendChild(vontainerHour5);
-  vontainerHour5.classList.add('vontainer');
-
-  const time5 = document.createElement('div');
-  vontainerHour5.appendChild(time5);
-  time5.textContent = setHours(displayData.datetime.slice(0, 2), 5);
-  time5.classList.add('content');
-
-  const iconTime5 = document.createElement('img');
-  vontainerHour5.appendChild(iconTime5);
-  iconTime5.src = getIcon(displayData.hour5Icon);
-  iconTime5.classList.add('content', 'icon');
-
-  const tempTime5 = document.createElement('div');
-  vontainerHour5.appendChild(tempTime5);
-  tempTime5.textContent = displayData.hour5Temp;
-  tempTime5.classList.add('content');
 
   const bottom = document.querySelector('.bottom');
 
