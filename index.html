@@ -9,11 +9,18 @@
   <link rel="icon" type="image/x-icon" href="images/favicon.svg">
 </head>
 <body>
-  <h1>Weather</h1>
-  <h3>There's no bad weather, only bad clothes...</h3>
+  <div class="title-header">
+    <h1 class="title">Weather</h1>
+    <h3 class="subtitle">There's no bad weather, only bad clothes...</h3>
+  </div>
   <div class="page-header">
-    <input type="text" id="userLocation" placeholder="Enter location...">
-    <button type="button" id="userBtn" onclick="getWeather()">Search</button>
+    <div class="searchLocation">
+      <input type="text" id="userLocation" placeholder="Enter location...">
+      <button type="button" id="userBtn" onclick="getWeather()">
+        <img src="images/search.svg" alt="Search">
+      </button>
+      <!-- <button type="button" id="userBtn" onclick="getWeather()">Search</button> -->
+    </div>
     <input type="checkbox" id="tog" onclick="getWeather()">
   </div>
   <div class="top"></div>

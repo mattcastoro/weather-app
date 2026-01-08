@@ -35,13 +35,13 @@ body {
   margin: 1em;
 }
 
-h1 {
+.title {
   font-size: 2em;
   text-align: center;
   margin-bottom: .25em;
 }
 
-h3 {
+.subtitle {
   font-size: 1em;
   font-style: italic;
   text-align: center;
@@ -50,16 +50,24 @@ h3 {
 
 .page-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   gap: 1em;
 }
 
+.searchLocation{
+  display: flex;
+  gap: .5em;
+}
+
 #userLocation {
-  width: 10em;
+  width: 13em;
+  padding: .25em 1em;
 }
 
 #userBtn {
+  display: flex;
+  padding: .5em;
   cursor: pointer;
   color: black;
   background-color: lightgray;
@@ -67,7 +75,6 @@ h3 {
 
 #userLocation,
 #userBtn {
-  padding: .25em 1em;
   border: none;
   border-radius: 1em;
   height: 2em;
@@ -81,10 +88,6 @@ h3 {
   justify-items: center;
   row-gap: 1em;
   margin: 2em;
-}
-
-.title {
-  font-size: 4em;
 }
 
 .heading {

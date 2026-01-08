@@ -1,9 +1,24 @@
 const apiKey = 'PN8RHXTN8SN6DFG8DGBSBE9GS'
 
-async function getData(location, unit) {
-  const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unit}&key=${apiKey}`
+async function getDataCurrent(location, unit) {
+  const urlCurrent = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unit}&key=${apiKey}`
   try {
-    const response = await fetch(url);
+    const response = await fetch(urlCurrent);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch(error) {
+    console.warn(error.message);
+  }
+}
+
+async function getDataPast(location, unit) {
+  // const urlPast = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/2024-12-31/2025-01-04/?unitGroup=${unit}&key=${apiKey}`
+  const urlPast = `https://71e766cf-7a43-4fe6-baff-a3ced57a1119.mock.pstmn.io/historicData`
+  try {
+    const response = await fetch(urlPast);
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
@@ -20,7 +35,11 @@ async function getWeather() {
   if (!userLocation.value) {
     alert("Please add a location before searching or selecting a degree unit.");
   } else {
-    getData(userLocation.value, unit).then((data) => {
+    getDataPast(userLocation.value, unit).then((data) => {
+      console.log(data);
+    });
+
+    getDataCurrent(userLocation.value, unit).then((data) => {
       console.log(data);
       const hour = data.currentConditions.datetime.slice(0,2);
       const displayData = {
