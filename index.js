@@ -96,11 +96,16 @@ async function getWeather() {
 
 function displayWeather(displayData) {
   clearDisplay();
-  updateBackground(displayData.currentIcon);
+  // updateBackground(displayData.currentIcon);
   const top = document.querySelector('.top');
   
   const locationField = document.getElementById('userLocation');
   locationField.value = displayData.location;
+
+  document.querySelector('#asOf').textContent = `As of: ${displayData.datetime.slice(0, 5)} local time`;
+  document.querySelector('#searchLocation').textContent = displayData.location;
+  document.querySelector('#timeSunrise').textContent = displayData.currentSunrise;
+  document.querySelector('#timeSunset').textContent = displayData.currentSunset;
 
   const asOf = document.createElement('div');
   top.appendChild(asOf);

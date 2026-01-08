@@ -80,6 +80,18 @@ body {
   height: 2em;
 }
 
+.location-container {
+  display: grid;
+  justify-items: center;
+  row-gap: .25em;
+  margin: 1em;
+}
+
+.sunrise-container, .sunset-container {
+  display: flex;
+  align-items: center;
+}
+
 .top,
 .middle,
 .bottom {
@@ -91,7 +103,7 @@ body {
 }
 
 .heading {
-  font-size: 1.5em;
+  font-size: 1.75em;
 }
 
 .subheading {
