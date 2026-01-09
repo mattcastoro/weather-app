@@ -103,175 +103,56 @@ function displayWeather(displayData) {
 
   document.querySelector('#asOf').textContent = `As of: ${displayData.datetime.slice(0, 5)} local time`;
   document.querySelector('#searchLocation').textContent = displayData.location;
+
   document.querySelector('#timeSunrise').textContent = displayData.currentSunrise;
   document.querySelector('#timeSunset').textContent = displayData.currentSunset;
+
   document.querySelector('#currentDescription').textContent = displayData.currentDayDescription;
   document.querySelector('#currentTemp').textContent = `${displayData.currentTemp}°`;
   document.querySelector('#highTemp').textContent = `High: ${displayData.currentHighTemp}°`;
   document.querySelector('#lowTemp').textContent = `Low: ${displayData.currentLowTemp}°`;
+
   document.querySelector('#hour1').textContent = setHours(displayData.datetime.slice(0, 2), 1);
   document.querySelector('#hour2').textContent = setHours(displayData.datetime.slice(0, 2), 2);
   document.querySelector('#hour3').textContent = setHours(displayData.datetime.slice(0, 2), 3);
   document.querySelector('#hour4').textContent = setHours(displayData.datetime.slice(0, 2), 4);
   document.querySelector('#hour5').textContent = setHours(displayData.datetime.slice(0, 2), 5);
+
   document.querySelector('#hour1-icon').src = getIcon(displayData.hour1Icon);
   document.querySelector('#hour2-icon').src = getIcon(displayData.hour2Icon);
   document.querySelector('#hour3-icon').src = getIcon(displayData.hour3Icon);
   document.querySelector('#hour4-icon').src = getIcon(displayData.hour4Icon);
   document.querySelector('#hour5-icon').src = getIcon(displayData.hour5Icon);
+
   document.querySelector('#hour1-temp').textContent = `${displayData.hour1Temp}°`;
   document.querySelector('#hour2-temp').textContent = `${displayData.hour2Temp}°`;
   document.querySelector('#hour3-temp').textContent = `${displayData.hour3Temp}°`;
   document.querySelector('#hour4-temp').textContent = `${displayData.hour4Temp}°`;
   document.querySelector('#hour5-temp').textContent = `${displayData.hour5Temp}°`;
 
+  document.querySelector('#day1').textContent = "Tomorrow";
+  document.querySelector('#day2').textContent = setDay(displayData.day2Day);
+  document.querySelector('#day3').textContent = setDay(displayData.day3Day);
+  document.querySelector('#day4').textContent = setDay(displayData.day4Day);
+  document.querySelector('#day5').textContent = setDay(displayData.day5Day);
 
-  const bottom = document.querySelector('.bottom');
+  document.querySelector('#day1-icon').src = getIcon(displayData.day1Icon);
+  document.querySelector('#day2-icon').src = getIcon(displayData.day2Icon);
+  document.querySelector('#day3-icon').src = getIcon(displayData.day3Icon);
+  document.querySelector('#day4-icon').src = getIcon(displayData.day4Icon);
+  document.querySelector('#day5-icon').src = getIcon(displayData.day5Icon);
 
-  const dailyForecast = document.createElement('div');
-  bottom.appendChild(dailyForecast);
-  dailyForecast.textContent = "5-DAY FORECAST";
-  dailyForecast.classList.add('subheading');
+  document.querySelector('#day1-low-temp').textContent = `${displayData.day1TempLow}°`;
+  document.querySelector('#day2-low-temp').textContent = `${displayData.day2TempLow}°`;
+  document.querySelector('#day3-low-temp').textContent = `${displayData.day3TempLow}°`;
+  document.querySelector('#day4-low-temp').textContent = `${displayData.day4TempLow}°`;
+  document.querySelector('#day5-low-temp').textContent = `${displayData.day5TempLow}°`;
 
-  const hontainerDaily = document.createElement('div');
-  bottom.appendChild(hontainerDaily);
-  hontainerDaily.classList.add('hontainer');
-
-  const vontainerDays = document.createElement('div');
-  hontainerDaily.appendChild(vontainerDays);
-  vontainerDays.classList.add("vontainer");
-
-  const dayDay0 = document.createElement('div');
-  vontainerDays.appendChild(dayDay0);
-  dayDay0.textContent = "Today";
-  dayDay0.classList.add('content');
-
-  const dayDay1 = document.createElement('div');
-  vontainerDays.appendChild(dayDay1);
-  dayDay1.textContent = setDay(displayData.day1Day);
-  dayDay1.classList.add('content');
-
-  const dayDay2 = document.createElement('div');
-  vontainerDays.appendChild(dayDay2);
-  dayDay2.textContent = setDay(displayData.day2Day);
-  dayDay2.classList.add('content');
-
-  const dayDay3 = document.createElement('div');
-  vontainerDays.appendChild(dayDay3);
-  dayDay3.textContent = setDay(displayData.day3Day);
-  dayDay3.classList.add('content');
-
-  const dayDay4 = document.createElement('div');
-  vontainerDays.appendChild(dayDay4);
-  dayDay4.textContent = setDay(displayData.day4Day);
-  dayDay4.classList.add('content');
-
-  const dayDay5 = document.createElement('div');
-  vontainerDays.appendChild(dayDay5);
-  dayDay5.textContent = setDay(displayData.day5Day);
-  dayDay5.classList.add('content');
-
-  const vontainerIcon = document.createElement('div');
-  hontainerDaily.appendChild(vontainerIcon);
-  vontainerIcon.classList.add("vontainer");
-
-  const iconDay0 = document.createElement('img');
-  vontainerIcon.appendChild(iconDay0);
-  iconDay0.src = getIcon(displayData.currentIcon);
-  iconDay0.classList.add('content', 'icon');
-
-  const iconDay1 = document.createElement('img');
-  vontainerIcon.appendChild(iconDay1);
-  iconDay1.src = getIcon(displayData.day1Icon);
-  iconDay1.classList.add('content', 'icon');
-
-  const iconDay2 = document.createElement('img');
-  vontainerIcon.appendChild(iconDay2);
-  iconDay2.src = getIcon(displayData.day2Icon);
-  iconDay2.classList.add('content', 'icon');
-
-  const iconDay3 = document.createElement('img');
-  vontainerIcon.appendChild(iconDay3);
-  iconDay3.src = getIcon(displayData.day3Icon);
-  iconDay3.classList.add('content', 'icon');
-
-  const iconDay4 = document.createElement('img');
-  vontainerIcon.appendChild(iconDay4);
-  iconDay4.src = getIcon(displayData.day4Icon);
-  iconDay4.classList.add('content', 'icon');
-
-  const iconDay5 = document.createElement('img');
-  vontainerIcon.appendChild(iconDay5);
-  iconDay5.src = getIcon(displayData.day5Icon);
-  iconDay5.classList.add('content', 'icon');
-
-  const vontainerTempLow = document.createElement('div');
-  hontainerDaily.appendChild(vontainerTempLow);
-  vontainerTempLow.classList.add("vontainer");
-
-  const tempLowDay0 = document.createElement('div');
-  vontainerTempLow.appendChild(tempLowDay0);
-  tempLowDay0.textContent = displayData.currentLowTemp;
-  tempLowDay0.classList.add('content');
-
-  const tempLowDay1 = document.createElement('div');
-  vontainerTempLow.appendChild(tempLowDay1);
-  tempLowDay1.textContent = displayData.day1TempLow;
-  tempLowDay1.classList.add('content');
-
-  const tempLowDay2 = document.createElement('div');
-  vontainerTempLow.appendChild(tempLowDay2);
-  tempLowDay2.textContent = displayData.day2TempLow;
-  tempLowDay2.classList.add('content');
-
-  const tempLowDay3 = document.createElement('div');
-  vontainerTempLow.appendChild(tempLowDay3);
-  tempLowDay3.textContent = displayData.day3TempLow;
-  tempLowDay3.classList.add('content');
-
-  const tempLowDay4 = document.createElement('div');
-  vontainerTempLow.appendChild(tempLowDay4);
-  tempLowDay4.textContent = displayData.day4TempLow;
-  tempLowDay4.classList.add('content');
-
-  const tempLowDay5 = document.createElement('div');
-  vontainerTempLow.appendChild(tempLowDay5);
-  tempLowDay5.textContent = displayData.day5TempLow;
-  tempLowDay5.classList.add('content');
-
-  const vontainerTempHigh = document.createElement('div');
-  hontainerDaily.appendChild(vontainerTempHigh);
-  vontainerTempHigh.classList.add("vontainer");
-
-  const tempHighDay0 = document.createElement('div');
-  vontainerTempHigh.appendChild(tempHighDay0);
-  tempHighDay0.textContent = displayData.currentHighTemp;
-  tempHighDay0.classList.add('content');
-
-  const tempHighDay1 = document.createElement('div');
-  vontainerTempHigh.appendChild(tempHighDay1);
-  tempHighDay1.textContent = displayData.day1TempHigh;
-  tempHighDay1.classList.add('content');
-
-  const tempHighDay2 = document.createElement('div');
-  vontainerTempHigh.appendChild(tempHighDay2);
-  tempHighDay2.textContent = displayData.day2TempHigh;
-  tempHighDay2.classList.add('content');
-
-  const tempHighDay3 = document.createElement('div');
-  vontainerTempHigh.appendChild(tempHighDay3);
-  tempHighDay3.textContent = displayData.day3TempHigh;
-  tempHighDay3.classList.add('content');
-
-  const tempHighDay4 = document.createElement('div');
-  vontainerTempHigh.appendChild(tempHighDay4);
-  tempHighDay4.textContent = displayData.day4TempHigh;
-  tempHighDay4.classList.add('content');
-
-  const tempHighDay5 = document.createElement('div');
-  vontainerTempHigh.appendChild(tempHighDay5);
-  tempHighDay5.textContent = displayData.day5TempHigh;
-  tempHighDay5.classList.add('content');
+  document.querySelector('#day1-high-temp').textContent = `${displayData.day1TempHigh}°`;
+  document.querySelector('#day2-high-temp').textContent = `${displayData.day2TempHigh}°`;
+  document.querySelector('#day3-high-temp').textContent = `${displayData.day3TempHigh}°`;
+  document.querySelector('#day4-high-temp').textContent = `${displayData.day4TempHigh}°`;
+  document.querySelector('#day5-high-temp').textContent = `${displayData.day5TempHigh}°`;
 }
 
 function cleanLocation(location) {

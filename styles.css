@@ -43,7 +43,7 @@ body {
 }
 
 .subtitle {
-  font-size: 1em;
+  font-size: .9em;
   font-style: italic;
   text-align: center;
   margin-bottom: 1.5em;
@@ -54,6 +54,7 @@ body {
   justify-content: space-around;
   align-items: center;
   gap: 1em;
+  margin: 1em;
 }
 
 .searchLocation{
@@ -97,6 +98,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  margin: 1em;
   border-bottom: 1px solid black;
   padding-bottom: 1em;
 }
@@ -105,6 +107,14 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.daily-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 1em;
+  border-bottom: 1px solid black;
+  padding-bottom: 1em;
 }
 
 .top,
