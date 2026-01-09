@@ -153,6 +153,55 @@ function displayWeather(displayData) {
   document.querySelector('#day3-high-temp').textContent = `${displayData.day3TempHigh}°`;
   document.querySelector('#day4-high-temp').textContent = `${displayData.day4TempHigh}°`;
   document.querySelector('#day5-high-temp').textContent = `${displayData.day5TempHigh}°`;
+
+  document.querySelector('#ly-hour0').textContent = "Now";
+  document.querySelector('#ly-hour1').textContent = setHours(displayData.datetime.slice(0, 2), 1);
+  document.querySelector('#ly-hour2').textContent = setHours(displayData.datetime.slice(0, 2), 2);
+  document.querySelector('#ly-hour3').textContent = setHours(displayData.datetime.slice(0, 2), 3);
+  document.querySelector('#ly-hour4').textContent = setHours(displayData.datetime.slice(0, 2), 4);
+  document.querySelector('#ly-hour5').textContent = setHours(displayData.datetime.slice(0, 2), 5);
+
+  document.querySelector('#ly-hour0-icon').src = getIcon(displayData.hour0Icon);
+  document.querySelector('#ly-hour1-icon').src = getIcon(displayData.hour1Icon);
+  document.querySelector('#ly-hour2-icon').src = getIcon(displayData.hour2Icon);
+  document.querySelector('#ly-hour3-icon').src = getIcon(displayData.hour3Icon);
+  document.querySelector('#ly-hour4-icon').src = getIcon(displayData.hour4Icon);
+  document.querySelector('#ly-hour5-icon').src = getIcon(displayData.hour5Icon);
+
+  document.querySelector('#ly-hour0-temp').textContent = `na°`;
+  document.querySelector('#ly-hour1-temp').textContent = `na°`;
+  document.querySelector('#ly-hour2-temp').textContent = `na°`;
+  document.querySelector('#ly-hour3-temp').textContent = `na°`;
+  document.querySelector('#ly-hour4-temp').textContent = `na°`;
+  document.querySelector('#ly-hour5-temp').textContent = `na°`;
+
+  document.querySelector('#ly-day0').textContent = "Today";
+  document.querySelector('#ly-day1').textContent = setDay(displayData.day1Day);
+  document.querySelector('#ly-day2').textContent = setDay(displayData.day2Day);
+  document.querySelector('#ly-day3').textContent = setDay(displayData.day3Day);
+  document.querySelector('#ly-day4').textContent = setDay(displayData.day4Day);
+  document.querySelector('#ly-day5').textContent = setDay(displayData.day5Day);
+
+  document.querySelector('#ly-day0-icon').src = getIcon(displayData.day0Icon);
+  document.querySelector('#ly-day1-icon').src = getIcon(displayData.day1Icon);
+  document.querySelector('#ly-day2-icon').src = getIcon(displayData.day2Icon);
+  document.querySelector('#ly-day3-icon').src = getIcon(displayData.day3Icon);
+  document.querySelector('#ly-day4-icon').src = getIcon(displayData.day4Icon);
+  document.querySelector('#ly-day5-icon').src = getIcon(displayData.day5Icon);
+
+  document.querySelector('#ly-day0-low-temp').textContent = `na°`;
+  document.querySelector('#ly-day1-low-temp').textContent = `na°`;
+  document.querySelector('#ly-day2-low-temp').textContent = `na°`;
+  document.querySelector('#ly-day3-low-temp').textContent = `na°`;
+  document.querySelector('#ly-day4-low-temp').textContent = `na°`;
+  document.querySelector('#ly-day5-low-temp').textContent = `na°`;
+
+  document.querySelector('#ly-day0-high-temp').textContent = `na°`;
+  document.querySelector('#ly-day1-high-temp').textContent = `na°`;
+  document.querySelector('#ly-day2-high-temp').textContent = `na°`;
+  document.querySelector('#ly-day3-high-temp').textContent = `na°`;
+  document.querySelector('#ly-day4-high-temp').textContent = `na°`;
+  document.querySelector('#ly-day5-high-temp').textContent = `na°`;
 }
 
 function cleanLocation(location) {
