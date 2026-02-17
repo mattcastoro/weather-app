@@ -15,8 +15,11 @@ async function getDataCurrent(location, unit) {
 }
 
 async function getDataPast(location, unit) {
-  // const urlPast = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/2024-12-31/2025-01-04/?unitGroup=${unit}&key=${apiKey}`
-  const urlPast = `https://71e766cf-7a43-4fe6-baff-a3ced57a1119.mock.pstmn.io/historicData`
+  const lastYearDate = getLastYearDateString();
+  const lastYearPlusFive = getLastYearPlusFiveDays();
+
+  const urlPast = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${lastYearDate}/${lastYearPlusFive}/?unitGroup=${unit}&key=${apiKey}`
+  // const urlPast = `https://71e766cf-7a43-4fe6-baff-a3ced57a1119.mock.pstmn.io/historicData`
   try {
     const response = await fetch(urlPast);
     if (!response.ok) {
@@ -39,134 +42,128 @@ async function getWeather() {
   }
 
   try {
-    const [pastData, currentData] = await Promise.all([
-      getDataPast(userLocation.value, unit),
-      getDataCurrent(userLocation.value, unit)
-    ]);
+    const currentDataPromise = getDataCurrent(userLocation.value, unit);
+
+    let pastData = getStoredPastData();
+
+    if (!pastData) {
+      pastData = await getDataPast(userLocation.value, unit);
+      storePastData(pastData);
+      console.log("Fetching past data");
+    } else {
+      console.log("Using cached data");
+    }
+    // const [pastData, currentData] = await Promise.all([
+    //   getDataPast(userLocation.value, unit),
+    //   getDataCurrent(userLocation.value, unit)
+    // ]);
+
+    const currentData = await currentDataPromise;
 
     const combinedData = {
       past: pastData,
       current: currentData
     };
     console.log(combinedData);
+
+    const displayData = transformWeatherData(combinedData);
+    console.log(displayData);
+    displayWeather(displayData);
+
   } catch (error) {
     console.warn("Error fetching weather data:", error);
   }
 }
 
-// async function getWeather() {
-//   const userLocation = document.getElementById('userLocation');
-//   const unit = getUnit();
-//   if (!userLocation.value) {
-//     alert("Please add a location before searching or selecting a degree unit.");
-//   } else {
-//     getDataPast(userLocation.value, unit).then((data) => {
-//       console.log(data);
-//       const hour = new Date().getHours();
-//       console.log(hour);
-//       const displayData_ly = {
-//         datetime : new Date().toLocaleString(),
-//       }
-//       console.log(displayData_ly);
-//       const now = new Date().toLocaleDateString();
-//       const today = new Date();
-//       console.log("today's date " + "= " + now);
-//       console.log(today.getHours());
-//     });
+function transformWeatherData(combinedData) {
+  const { past, current } = combinedData;
+  const hour = current.currentConditions.datetime.slice(0,2);
 
-//     getDataCurrent(userLocation.value, unit).then((data) => {
-//       console.log(data);
-//       const hour = data.currentConditions.datetime.slice(0,2);
-//       console.log("today's hour " + "= " + hour);
-//       const displayData = {
-//         datetime : data.currentConditions.datetime,
-//         location : cleanLocation(data.resolvedAddress),
+  return {
+    datetime : current.currentConditions.datetime,
+    location : cleanLocation(current.resolvedAddress),
 
-//         currentTemp : Math.round(data.currentConditions.temp),
-//         feelsLike : Math.round(data.currentConditions.feelslike),
-//         currentHighTemp : Math.round(data.days[0].tempmax),
-//         currentLowTemp : Math.round(data.days[0].tempmin),
-//         currentIcon : data.currentConditions.icon,
-//         currentSunrise : data.currentConditions.sunrise.slice(0, 5),
-//         currentSunset : data.currentConditions.sunset.slice(0, 5),
+    currentTemp : Math.round(current.currentConditions.temp),
+    feelsLike : Math.round(current.currentConditions.feelslike),
+    currentHighTemp : Math.round(current.days[0].tempmax),
+    currentLowTemp : Math.round(current.days[0].tempmin),
+    currentIcon : current.currentConditions.icon,
+    currentSunrise : current.currentConditions.sunrise.slice(0, 5),
+    currentSunset : current.currentConditions.sunset.slice(0, 5),
 
-//         currentDayDescription : data.description,
-//         hour0Icon : data.currentConditions.icon,
-//         hour1Icon : data.days[0].hours[setHours(hour, 1)].icon,
-//         hour1Temp : Math.round(data.days[0].hours[setHours(hour, 1)].temp),
-//         hour2Icon : data.days[0].hours[setHours(hour, 2)].icon,
-//         hour2Temp : Math.round(data.days[0].hours[setHours(hour, 2)].temp),
-//         hour3Icon : data.days[0].hours[setHours(hour, 3)].icon,
-//         hour3Temp : Math.round(data.days[0].hours[setHours(hour, 3)].temp),
-//         hour4Icon : data.days[0].hours[setHours(hour, 4)].icon,
-//         hour4Temp : Math.round(data.days[0].hours[setHours(hour, 4)].temp),
-//         hour5Icon : data.days[0].hours[setHours(hour, 5)].icon,
-//         hour5Temp : Math.round(data.days[0].hours[setHours(hour, 5)].temp),
+    currentDayDescription : current.description,
+    hour0Icon : current.currentConditions.icon,
+    hour1Icon : current.days[0].hours[setHours(hour, 1)].icon,
+    hour1Temp : Math.round(current.days[0].hours[setHours(hour, 1)].temp),
+    hour2Icon : current.days[0].hours[setHours(hour, 2)].icon,
+    hour2Temp : Math.round(current.days[0].hours[setHours(hour, 2)].temp),
+    hour3Icon : current.days[0].hours[setHours(hour, 3)].icon,
+    hour3Temp : Math.round(current.days[0].hours[setHours(hour, 3)].temp),
+    hour4Icon : current.days[0].hours[setHours(hour, 4)].icon,
+    hour4Temp : Math.round(current.days[0].hours[setHours(hour, 4)].temp),
+    hour5Icon : current.days[0].hours[setHours(hour, 5)].icon,
+    hour5Temp : Math.round(current.days[0].hours[setHours(hour, 5)].temp),
 
-//         day1Day : data.days[1].datetime,
-//         day1Icon : data.days[1].icon,
-//         day1TempLow : Math.round(data.days[1].tempmin),
-//         day1TempHigh : Math.round(data.days[1].tempmax),
-//         day2Day : data.days[2].datetime,
-//         day2Icon : data.days[2].icon,
-//         day2TempLow : Math.round(data.days[2].tempmin),
-//         day2TempHigh : Math.round(data.days[2].tempmax),
-//         day3Day : data.days[3].datetime,
-//         day3Icon : data.days[3].icon,
-//         day3TempLow : Math.round(data.days[3].tempmin),
-//         day3TempHigh : Math.round(data.days[3].tempmax),
-//         day4Day : data.days[4].datetime,
-//         day4Icon : data.days[4].icon,
-//         day4TempLow : Math.round(data.days[4].tempmin),
-//         day4TempHigh : Math.round(data.days[4].tempmax),
-//         day5Day : data.days[5].datetime,
-//         day5Icon : data.days[5].icon,
-//         day5TempLow : Math.round(data.days[5].tempmin),
-//         day5TempHigh : Math.round(data.days[5].tempmax),
+    day1Day : current.days[1].datetime,
+    day1Icon : current.days[1].icon,
+    day1TempLow : Math.round(current.days[1].tempmin),
+    day1TempHigh : Math.round(current.days[1].tempmax),
+    day2Day : current.days[2].datetime,
+    day2Icon : current.days[2].icon,
+    day2TempLow : Math.round(current.days[2].tempmin),
+    day2TempHigh : Math.round(current.days[2].tempmax),
+    day3Day : current.days[3].datetime,
+    day3Icon : current.days[3].icon,
+    day3TempLow : Math.round(current.days[3].tempmin),
+    day3TempHigh : Math.round(current.days[3].tempmax),
+    day4Day : current.days[4].datetime,
+    day4Icon : current.days[4].icon,
+    day4TempLow : Math.round(current.days[4].tempmin),
+    day4TempHigh : Math.round(current.days[4].tempmax),
+    day5Day : current.days[5].datetime,
+    day5Icon : current.days[5].icon,
+    day5TempLow : Math.round(current.days[5].tempmin),
+    day5TempHigh : Math.round(current.days[5].tempmax),
 
-//         ly_hour0Icon : data.currentConditions.icon,
-//         ly_hour0Temp : Math.round(data.currentConditions.temp),
-//         ly_hour1Icon : data.days[0].hours[setHours(hour, 1)].icon,
-//         ly_hour1Temp : Math.round(data.days[0].hours[setHours(hour, 1)].temp),
-//         ly_hour2Icon : data.days[0].hours[setHours(hour, 2)].icon,
-//         ly_hour2Temp : Math.round(data.days[0].hours[setHours(hour, 2)].temp),
-//         ly_hour3Icon : data.days[0].hours[setHours(hour, 3)].icon,
-//         ly_hour3Temp : Math.round(data.days[0].hours[setHours(hour, 3)].temp),
-//         ly_hour4Icon : data.days[0].hours[setHours(hour, 4)].icon,
-//         ly_hour4Temp : Math.round(data.days[0].hours[setHours(hour, 4)].temp),
-//         ly_hour5Icon : data.days[0].hours[setHours(hour, 5)].icon,
-//         ly_hour5Temp : Math.round(data.days[0].hours[setHours(hour, 5)].temp), 
+    ly_hour0Icon : past.days[0].hours[setHours(hour, 0)].icon,
+    ly_hour0Temp : Math.round(past.days[0].hours[setHours(hour, 0)].temp),
+    ly_hour1Icon : past.days[0].hours[setHours(hour, 1)].icon,
+    ly_hour1Temp : Math.round(past.days[0].hours[setHours(hour, 1)].temp),
+    ly_hour2Icon : past.days[0].hours[setHours(hour, 2)].icon,
+    ly_hour2Temp : Math.round(past.days[0].hours[setHours(hour, 2)].temp),
+    ly_hour3Icon : past.days[0].hours[setHours(hour, 3)].icon,
+    ly_hour3Temp : Math.round(past.days[0].hours[setHours(hour, 3)].temp),
+    ly_hour4Icon : past.days[0].hours[setHours(hour, 4)].icon,
+    ly_hour4Temp : Math.round(past.days[0].hours[setHours(hour, 4)].temp),
+    ly_hour5Icon : past.days[0].hours[setHours(hour, 5)].icon,
+    ly_hour5Temp : Math.round(past.days[0].hours[setHours(hour, 5)].temp), 
 
-//         ly_day0Day : "Today",
-//         ly_day0Icon : data.days[1].icon,
-//         ly_day0TempLow : Math.round(data.days[1].tempmin),
-//         ly_day0TempHigh : Math.round(data.days[1].tempmax),
-//         ly_day1Day : data.days[1].datetime,
-//         ly_day1Icon : data.days[1].icon,
-//         ly_day1TempLow : Math.round(data.days[1].tempmin),
-//         ly_day1TempHigh : Math.round(data.days[1].tempmax),
-//         ly_day2Day : data.days[2].datetime,
-//         ly_day2Icon : data.days[2].icon,
-//         ly_day2TempLow : Math.round(data.days[2].tempmin),
-//         ly_day2TempHigh : Math.round(data.days[2].tempmax),
-//         ly_day3Day : data.days[3].datetime,
-//         ly_day3Icon : data.days[3].icon,
-//         ly_day3TempLow : Math.round(data.days[3].tempmin),
-//         ly_day3TempHigh : Math.round(data.days[3].tempmax),
-//         ly_day4Day : data.days[4].datetime,
-//         ly_day4Icon : data.days[4].icon,
-//         ly_day4TempLow : Math.round(data.days[4].tempmin),
-//         ly_day4TempHigh : Math.round(data.days[4].tempmax),
-//         ly_day5Day : data.days[5].datetime,
-//         ly_day5Icon : data.days[5].icon,
-//         ly_day5TempLow : Math.round(data.days[5].tempmin),
-//         ly_day5TempHigh : Math.round(data.days[5].tempmax),
-//       };
-//       console.log(displayData);
-//       displayWeather(displayData);
-//     })
-//   }
-// }
+    ly_day0Day : "Today",
+    ly_day0Icon : past.days[0].icon,
+    ly_day0TempLow : Math.round(past.days[0].tempmin),
+    ly_day0TempHigh : Math.round(past.days[0].tempmax),
+    ly_day1Day : past.days[1].datetime,
+    ly_day1Icon : past.days[1].icon,
+    ly_day1TempLow : Math.round(past.days[1].tempmin),
+    ly_day1TempHigh : Math.round(past.days[1].tempmax),
+    ly_day2Day : past.days[2].datetime,
+    ly_day2Icon : past.days[2].icon,
+    ly_day2TempLow : Math.round(past.days[2].tempmin),
+    ly_day2TempHigh : Math.round(past.days[2].tempmax),
+    ly_day3Day : past.days[3].datetime,
+    ly_day3Icon : past.days[3].icon,
+    ly_day3TempLow : Math.round(past.days[3].tempmin),
+    ly_day3TempHigh : Math.round(past.days[3].tempmax),
+    ly_day4Day : past.days[4].datetime,
+    ly_day4Icon : past.days[4].icon,
+    ly_day4TempLow : Math.round(past.days[4].tempmin),
+    ly_day4TempHigh : Math.round(past.days[4].tempmax),
+    ly_day5Day : past.days[5].datetime,
+    ly_day5Icon : past.days[5].icon,
+    ly_day5TempLow : Math.round(past.days[5].tempmin),
+    ly_day5TempHigh : Math.round(past.days[5].tempmax),
+  };
+}
 
 function displayWeather(displayData) {
   clearDisplay();
@@ -249,19 +246,19 @@ function displayWeather(displayData) {
   document.querySelector('#ly-hour4-temp').textContent = `${displayData.ly_hour4Temp}°`;
   document.querySelector('#ly-hour5-temp').textContent = `${displayData.ly_hour5Temp}°`;
 
-  document.querySelector('#ly-day0').textContent = displayData.ly_day0Day;
+  document.querySelector('#ly-day0').textContent = "Today";
   document.querySelector('#ly-day1').textContent = setDay(displayData.day1Day);
   document.querySelector('#ly-day2').textContent = setDay(displayData.day2Day);
   document.querySelector('#ly-day3').textContent = setDay(displayData.day3Day);
   document.querySelector('#ly-day4').textContent = setDay(displayData.day4Day);
   document.querySelector('#ly-day5').textContent = setDay(displayData.day5Day);
 
-  document.querySelector('#ly-day0-icon').src = getIcon(displayData.day0Icon);
-  document.querySelector('#ly-day1-icon').src = getIcon(displayData.day1Icon);
-  document.querySelector('#ly-day2-icon').src = getIcon(displayData.day2Icon);
-  document.querySelector('#ly-day3-icon').src = getIcon(displayData.day3Icon);
-  document.querySelector('#ly-day4-icon').src = getIcon(displayData.day4Icon);
-  document.querySelector('#ly-day5-icon').src = getIcon(displayData.day5Icon);
+  document.querySelector('#ly-day0-icon').src = getIcon(displayData.ly_day0Icon);
+  document.querySelector('#ly-day1-icon').src = getIcon(displayData.ly_day1Icon);
+  document.querySelector('#ly-day2-icon').src = getIcon(displayData.ly_day2Icon);
+  document.querySelector('#ly-day3-icon').src = getIcon(displayData.ly_day3Icon);
+  document.querySelector('#ly-day4-icon').src = getIcon(displayData.ly_day4Icon);
+  document.querySelector('#ly-day5-icon').src = getIcon(displayData.ly_day5Icon);
 
   document.querySelector('#ly-day0-low-temp').textContent = `${displayData.ly_day0TempLow}°`;
   document.querySelector('#ly-day1-low-temp').textContent = `${displayData.ly_day1TempLow}°`;
@@ -298,6 +295,55 @@ function setDay(dateData) {
   const date = new Date(`${dateData}T00:00:00`);
   let day = weekday[date.getDay()];
   return day;
+}
+
+function getTodayString() {
+  const today = new Date();
+  return today.toISOString().split("T")[0];
+}
+
+function getStoredPastData() {
+  const stored = localStorage.getItem("pastWeather");
+  
+  if (!stored) return null;
+  
+  const parsed = JSON.parse(stored);
+  
+  if (parsed.dateStored === getTodayString()) {
+    return parsed.data;
+  }
+  
+  return null;
+}
+
+function storePastData(data) {
+  const payload = {
+    dateStored: getTodayString(),
+    data: data
+  };
+
+  localStorage.setItem("pastWeather", JSON.stringify(payload));
+}
+
+function getLastYearDateString() {
+  const today = new Date();
+
+  const lastYear = new Date(
+    today.getFullYear() - 1,
+    today.getMonth(),
+    today.getDate()
+  );
+
+  return lastYear.toISOString().split("T")[0];
+}
+
+function getLastYearPlusFiveDays() {
+  const today = new Date();
+
+  today.setFullYear(today.getFullYear() - 1);
+  today.setDate(today.getDate() + 5);
+
+  return today.toISOString().split("T")[0];
 }
 
 function getIcon(iconId) {
