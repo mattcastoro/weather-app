@@ -1,7 +1,6 @@
-const apiKey = 'PN8RHXTN8SN6DFG8DGBSBE9GS'
-
 async function getDataCurrent(location, unit) {
-  const urlCurrent = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=${unit}&key=${apiKey}`
+  const urlCurrent = `/api/weather/current?location=${encodeURIComponent(location)}&unit=${encodeURIComponent(unit)}`;
+
   try {
     const response = await fetch(urlCurrent);
     if (!response.ok) {
@@ -15,11 +14,8 @@ async function getDataCurrent(location, unit) {
 }
 
 async function getDataPast(location, unit) {
-  const lastYearDate = getLastYearDateString();
-  const lastYearPlusFive = getLastYearPlusFiveDays();
+  const urlPast = `/api/weather/past?location=${encodeURIComponent(location)}&unit=${encodeURIComponent(unit)}`;
 
-  const urlPast = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${lastYearDate}/${lastYearPlusFive}/?unitGroup=${unit}&key=${apiKey}`
-  // const urlPast = `https://71e766cf-7a43-4fe6-baff-a3ced57a1119.mock.pstmn.io/historicData`
   try {
     const response = await fetch(urlPast);
     if (!response.ok) {
@@ -323,27 +319,6 @@ function storePastData(data) {
   };
 
   localStorage.setItem("pastWeather", JSON.stringify(payload));
-}
-
-function getLastYearDateString() {
-  const today = new Date();
-
-  const lastYear = new Date(
-    today.getFullYear() - 1,
-    today.getMonth(),
-    today.getDate()
-  );
-
-  return lastYear.toISOString().split("T")[0];
-}
-
-function getLastYearPlusFiveDays() {
-  const today = new Date();
-
-  today.setFullYear(today.getFullYear() - 1);
-  today.setDate(today.getDate() + 5);
-
-  return today.toISOString().split("T")[0];
 }
 
 function getIcon(iconId) {
