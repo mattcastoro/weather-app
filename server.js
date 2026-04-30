@@ -74,6 +74,7 @@ async function handleWeatherRequest(requestUrl, res) {
     });
     res.end(responseBody);
   } catch (error) {
+    console.error("Unable to fetch weather data:", error);
     sendJson(res, 502, { error: "Unable to fetch weather data." });
   }
 }

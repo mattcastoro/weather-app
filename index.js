@@ -1,31 +1,24 @@
 async function getDataCurrent(location, unit) {
   const urlCurrent = `/api/weather/current?location=${encodeURIComponent(location)}&unit=${encodeURIComponent(unit)}`;
 
-  try {
-    const response = await fetch(urlCurrent);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch(error) {
-    console.warn(error.message);
-  }
+  return fetchWeatherData(urlCurrent);
 }
 
 async function getDataPast(location, unit) {
   const urlPast = `/api/weather/past?location=${encodeURIComponent(location)}&unit=${encodeURIComponent(unit)}`;
 
-  try {
-    const response = await fetch(urlPast);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch(error) {
-    console.warn(error.message);
+  return fetchWeatherData(urlPast);
+}
+
+async function fetchWeatherData(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || `Response status: ${response.status}`);
   }
+
+  return data;
 }
 
 async function getWeather() {
@@ -68,6 +61,7 @@ async function getWeather() {
 
   } catch (error) {
     console.warn("Error fetching weather data:", error);
+    alert(`Unable to load weather data: ${error.message}`);
   }
 }
 
