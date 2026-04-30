@@ -7,7 +7,7 @@ const ROOT_DIR = __dirname;
 loadEnvFile();
 
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "127.0.0.1";
+const HOST = process.env.HOST || "0.0.0.0";
 const API_KEY = process.env.VISUAL_CROSSING_API_KEY;
 
 const MIME_TYPES = {
@@ -30,7 +30,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Weather app running at http://localhost:${PORT}`);
+  console.log(`Weather app running on ${HOST}:${PORT}`);
 });
 
 async function handleWeatherRequest(requestUrl, res) {
