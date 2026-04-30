@@ -69,6 +69,11 @@ async function handleWeatherRequest(requestUrl, res) {
     const apiResponse = await fetch(visualCrossingUrl);
     const responseBody = await apiResponse.text();
 
+    if (!apiResponse.ok) {
+      sendJson(res, apiResponse.status, { error: responseBody });
+      return;
+    }
+
     res.writeHead(apiResponse.status, {
       "Content-Type": apiResponse.headers.get("content-type") || "application/json",
     });

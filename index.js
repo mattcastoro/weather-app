@@ -12,13 +12,23 @@ async function getDataPast(location, unit) {
 
 async function fetchWeatherData(url) {
   const response = await fetch(url);
-  const data = await response.json();
+  const data = await parseResponseBody(response);
 
   if (!response.ok) {
-    throw new Error(data.error || `Response status: ${response.status}`);
+    throw new Error(data.error || data || `Response status: ${response.status}`);
   }
 
   return data;
+}
+
+async function parseResponseBody(response) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  return response.text();
 }
 
 async function getWeather() {
