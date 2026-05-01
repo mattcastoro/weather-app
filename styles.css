@@ -31,44 +31,46 @@ body {
   background-color: #AABFCC;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 16px;
-  margin: 1em;
+  max-width: 900px;
+  margin: 1rem auto;
+  padding: 0 1rem;
   text-align: center;
 }
 
 .title {
-  font-size: 2em;
+  font-size: 2rem;
   text-align: center;
-  margin-bottom: .25em;
+  margin-bottom: .25rem;
 }
 
 .subtitle {
-  font-size: .9em;
+  font-size: .9rem;
   font-style: italic;
   text-align: center;
-  margin-bottom: 1.5em;
+  margin-bottom: 1.5rem;
 }
 
 .page-header {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  gap: 1em;
-  margin: 1em;
+  gap: 1rem;
+  margin: 1rem;
 }
 
 .searchLocation{
   display: flex;
-  gap: .5em;
+  gap: .5rem;
 }
 
 #userLocation {
-  width: 13em;
-  padding: .25em 1em;
+  width: 13rem;
+  padding: .25rem 1rem;
 }
 
 #userBtn {
   display: flex;
-  padding: .5em;
+  padding: .5rem;
   cursor: pointer;
   color: black;
   background-color: lightgray;
@@ -77,8 +79,8 @@ body {
 #userLocation,
 #userBtn {
   border: none;
-  border-radius: 1em;
-  height: 2em;
+  border-radius: 1rem;
+  height: 2rem;
 }
 
 #userBtn img {
@@ -89,8 +91,8 @@ body {
 .location-container {
   display: grid;
   justify-items: center;
-  row-gap: .25em;
-  margin: 1em;
+  row-gap: .25rem;
+  margin: 1rem;
 }
 
 .sunrise-container, .sunset-container {
@@ -101,8 +103,8 @@ body {
 .today-container {
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  margin: 1em;
+  gap: 1rem;
+  margin: 1rem;
 }
 
 .today-conditions {
@@ -111,11 +113,26 @@ body {
   align-items: center;
 }
 
+/* stacks current temp on top of hourly */
+/* @media (max-width: 600px) {
+  .today-conditions {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+} */
+
 .daily-container {
   display: flex;
   justify-content: space-around;
-  margin: 1em;
+  margin: 1rem;
 }
+
+/* .daily-container {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 1rem;
+  align-items: center;
+} */
 
 .last-year-container {
   display: grid;
@@ -124,50 +141,66 @@ body {
   justify-content: space-around;
 }
 
+/* stacks the last year section */
+/* @media (max-width: 700px) {
+  .last-year-container {
+    grid-auto-flow: row;
+    gap: 1.5rem;
+  }
+
+  .ly-border {
+    border-left: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+} */
+
+
 .border-bottom {
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 .ly-border {
   border-left: 1px solid rgba(0, 0, 0, 0.25);
-  padding-left: 1em;
+  padding-left: 1rem;
 }
 
 .large {
-  font-size: 6em;
-  padding-bottom: .1em;
+  font-size: 6rem;
+  padding-bottom: .1rem;
 }
 
 .heading {
-  font-size: 1.75em;
+  font-size: 1.75rem;
 }
 
 .subheading {
-  font-size: 1.25em;
+  font-size: 1.25rem;
   text-align: center;
 }
 
 .content {
-  font-size: .9em;
+  font-size: .9rem;
 }
 
 .subContent {
-  font-size: .75em;
+  font-size: .75rem;
 }
 
 .icon {
-  width: 2em;
+  width: 2rem;
 }
 
 .hontainer {
   display: flex;
   justify-content: center;
-  gap: 1em;
+  gap: 1rem;
 }
 
 .hontainer.sun {
   align-items: center;
-  gap: .25em;
+  gap: .25rem;
   align-self: center;
 }
 
@@ -182,9 +215,9 @@ body {
 #tog {
   appearance: none;
   position: relative;
-  width: 4em;
-  height: 2em;
-  border-radius: 2em;
+  width: 4rem;
+  height: 2rem;
+  border-radius: 2rem;
   background-color: #cccccc;
   transition: background .3s;
   outline: none;
