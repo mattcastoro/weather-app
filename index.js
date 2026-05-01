@@ -7,9 +7,9 @@ async function getDataCurrent(location, unit) {
 async function getDataPast(location, unit) {
   // to avoid API overages swap below URLs
   // mock URL
-  const urlPast = 'https://71e766cf-7a43-4fe6-baff-a3ced57a1119.mock.pstmn.io/historicData'
+  // const urlPast = 'https://71e766cf-7a43-4fe6-baff-a3ced57a1119.mock.pstmn.io/historicData'
   // production URL
-  // const urlPast = `/api/weather/past?location=${encodeURIComponent(location)}&unit=${encodeURIComponent(unit)}`;
+  const urlPast = `/api/weather/past?location=${encodeURIComponent(location)}&unit=${encodeURIComponent(unit)}`;
 
   return fetchWeatherData(urlPast);
 }
